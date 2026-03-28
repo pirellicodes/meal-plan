@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Wellness Meal Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f5f6f4;
+  --surface:  #ffffff;
+  --border:   #e6e8e3;
+  --border-strong: #d0d3cc;
+  --text:     #2c2e2a;
+  --text-2:   #5a5e56;
+  --text-3:   #8e9388;
+  --navy:     #2a2e26;
+  --navy-2:   #33382e;
+  --navy-3:   #3d4238;
+  --terracotta: #7e8a72;
+  --tc-bg:    #f4f6f2;
+  --sage:     #5a8a62;
+  --sage-bg:  #f0f5f1;
+  --gold:     #9a8440;
+  --gold-bg:  #f8f6ee;
+  --her:      #a85670;
+  --her-bg:   #faf2f4;
+  --her-b:    #e4c8d0;
+  --him:      #4a7a9a;
+  --him-bg:   #f0f5f8;
+  --him-b:    #c0d4e2;
+  --rule:     #e6e8e3;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:13px;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+
+/* ── HEADER ── */
+.hdr{background:var(--navy);padding:36px 48px 28px;}
+.hdr-row{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--terracotta);margin-bottom:10px;display:block;}
+.hdr h1{font-size:34px;font-weight:300;color:#fff;letter-spacing:-0.5px;line-height:1;}
+.hdr h1 strong{font-weight:700;}
+.hdr-stats{display:flex;gap:24px;flex-shrink:0;align-items:flex-end;}
+.stat{text-align:right;}
+.stat-v{font-size:19px;font-weight:700;display:block;line-height:1;margin-bottom:3px;}
+.stat-v.her{color:#d0889a;}
+.stat-v.him{color:#7aabbf;}
+.stat-l{font-size:9.5px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.3);}
+.hdr-note{margin-top:14px;font-size:11px;color:rgba(255,255,255,0.28);font-weight:300;}
+
+/* ── NAV ── */
+.nav{background:var(--navy-2);border-bottom:1px solid rgba(255,255,255,0.07);position:sticky;top:0;z-index:200;}
+.nav-inner{display:flex;padding:0 32px;}
+.nav-btn{background:none;border:none;color:rgba(255,255,255,0.32);font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;white-space:nowrap;}
+.nav-btn:hover{color:rgba(255,255,255,0.65);}
+.nav-btn.active{color:#fff;border-bottom-color:var(--terracotta);}
+
+/* ── PAGE SECTIONS ── */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── SHARED UTIL ── */
+.wrap{max-width:960px;margin:0 auto;padding:0 48px 80px;}
+.sec{display:flex;align-items:center;gap:18px;padding:44px 0 28px;}
+.sec hr{flex:1;border:none;border-top:1px solid var(--rule);}
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-3);white-space:nowrap;}
+.intro{font-size:13px;color:var(--text-2);font-weight:300;line-height:1.75;max-width:580px;margin-bottom:32px;}
+
+/* ════════════════════════════════
+   PAGE 1 — REFERENCE GUIDE
+════════════════════════════════ */
+
+/* Portion grid */
+.portion-grid{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--text);border-left:1px solid var(--rule);}
+.portion-cell{display:grid;grid-template-columns:52px 1fr;gap:0 18px;padding:20px 24px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);align-items:start;background:var(--surface);}
+.p-icon{font-size:26px;line-height:1;padding-top:2px;}
+.p-amt{font-size:22px;font-weight:700;color:var(--terracotta);display:block;line-height:1;margin-bottom:3px;}
+.p-name{font-size:11px;font-weight:600;letter-spacing:0.3px;display:block;margin-bottom:5px;}
+.p-desc{font-size:11.5px;color:var(--text-2);line-height:1.5;font-weight:300;margin-bottom:6px;}
+.p-tags{display:flex;flex-wrap:wrap;gap:3px 8px;}
+.p-tag{font-size:10.5px;color:var(--text-3);display:flex;align-items:center;gap:4px;}
+.p-tag::before{content:'·';color:var(--border-strong);}
+
+/* Protein table */
+.protein-hdr{font-size:12px;font-weight:600;margin:32px 0 14px;color:var(--text);}
+.ptable{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule);border-left:1px solid var(--rule);}
+.ptcell{padding:12px 14px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--surface);}
+.ptcell .pf{font-size:11.5px;font-weight:600;margin-bottom:2px;}
+.ptcell .pp{font-size:10.5px;color:var(--text-3);margin-bottom:2px;font-weight:300;}
+.ptcell .pv{font-size:12px;font-weight:700;color:var(--terracotta);}
+
+/* Targets */
+.targets{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--text);margin-top:28px;}
+.tcol{padding:18px 24px 18px 0;border-right:1px solid var(--rule);}
+.tcol:last-child{padding:18px 0 18px 24px;border-right:none;}
+.twho{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:8px;}
+.tcol:first-child .twho{color:var(--her);}
+.tcol:last-child .twho{color:var(--him);}
+.ttitle{font-size:13px;font-weight:600;margin-bottom:10px;}
+.trow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--rule);font-size:12px;}
+.trow:last-child{border-bottom:none;}
+.trow .tl{color:var(--text-2);font-weight:300;}
+.trow .tv{font-weight:600;}
+
+/* Beverages */
+.bev-grid{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--text);}
+.bev-col{padding:22px 28px 26px 0;}
+.bev-col:last-child{padding:22px 0 26px 28px;border-left:1px solid var(--rule);}
+.bev-kicker{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;display:block;margin-bottom:10px;}
+.bev-col:first-child .bev-kicker{color:var(--him);}
+.bev-col:last-child .bev-kicker{color:var(--her);}
+.bev-col h3{font-size:16px;font-weight:600;margin-bottom:10px;letter-spacing:-0.2px;}
+.bev-col p{font-size:12px;color:var(--text-2);line-height:1.75;font-weight:300;margin-bottom:12px;}
+.bottles{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:8px;}
+.bottle strong{display:block;font-size:11.5px;font-weight:600;margin-bottom:2px;}
+.bottle span{font-size:10.5px;color:var(--text-3);font-weight:300;line-height:1.4;}
+.swaps{margin-top:8px;}
+.swap{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);font-size:12px;}
+.swap:last-child{border-bottom:none;}
+.swap-s{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;width:36px;}
+.swap-s.ok{color:var(--sage);}
+.swap-s.no{color:var(--her);}
+.swap-n{font-weight:500;flex:1;}
+.swap-note{font-size:10.5px;color:var(--text-3);font-weight:300;}
+
+/* Data tables */
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 52px;}
+.dt{border-top:2px solid var(--text);margin-bottom:36px;}
+.dt-hd{padding:11px 0 9px;border-bottom:1px solid var(--rule);}
+.dt-src{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-3);font-weight:600;}
+.dt-hd h4{font-size:14px;font-weight:600;margin-top:2px;line-height:1.25;letter-spacing:-0.1px;}
+.dr{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--rule);font-size:12px;}
+.dr:last-of-type{border-bottom:none;}
+.dl{color:var(--text-2);font-weight:300;}
+.dv{font-weight:600;}
+.dv.hh{color:var(--her);}
+.dv.hm{color:var(--him);}
+.dv.hs{color:var(--sage);}
+.dt-note{font-size:10px;color:var(--text-3);padding-top:6px;font-weight:300;font-style:italic;}
+
+/* ════════════════════════════════
+   PAGE 2 — CALENDAR
+════════════════════════════════ */
+.cal-scroll{overflow-x:auto;padding:28px 48px 64px;}
+table.cal{width:100%;min-width:1020px;border-collapse:collapse;table-layout:fixed;}
+col.cl{width:88px;}
+col.cd{width:calc((100% - 88px)/7);}
+thead tr th{padding:0;}
+th.thl{background:transparent;border-right:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong);}
+th.thd{padding:0;border-right:1px solid var(--rule);border-bottom:1px solid var(--border-strong);vertical-align:bottom;background:var(--surface);}
+th.thd:last-child{border-right:none;}
+.dh{padding:13px 13px 11px;border-top:3px solid transparent;}
+.dh.wo{border-top-color:var(--gold);}
+.dh.re{border-top-color:var(--sage);}
+.dhn{font-size:13.5px;font-weight:600;color:var(--text);display:block;margin-bottom:4px;letter-spacing:-0.2px;}
+.dhs{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.dhs.wo{color:var(--gold);}
+.dhs.re{color:var(--sage);}
+.dp{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.wo .dp{background:var(--gold);}
+.re .dp{background:var(--sage);}
+td.tdl{vertical-align:top;border-right:1px solid var(--border-strong);border-bottom:1px solid var(--rule);background:var(--bg);padding:0;}
+.li{padding:13px 9px 13px 0;text-align:right;}
+.lt{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:3px;}
+.lt.b{color:var(--gold);}
+.lt.l{color:var(--sage);}
+.lt.d{color:var(--terracotta);}
+.lt.s{color:var(--text-3);}
+.lt.t{color:var(--text-3);}
+.ltime{font-size:10px;font-weight:400;color:var(--text-3);display:block;}
+td.tdm{vertical-align:top;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--surface);padding:12px 12px 13px;}
+td.tdm:last-child{border-right:none;}
+tr.rl td.tdm,tr.rs td.tdm{background:#f9fafc;}
+.mn{font-size:12px;font-weight:600;color:var(--text);display:block;line-height:1.35;margin-bottom:9px;padding-bottom:8px;border-bottom:1px solid var(--rule);letter-spacing:-0.1px;}
+.pr{padding:5px 0 0;}
+.pr+.pr{margin-top:6px;padding-top:6px;border-top:1px solid var(--rule);}
+.pw{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.pwl{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.pr.her .pwl{color:var(--her);}
+.pr.him .pwl{color:var(--him);}
+.pk{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:20px;}
+.pr.her .pk{background:var(--her-bg);color:var(--her);border:1px solid var(--her-b);}
+.pr.him .pk{background:var(--him-bg);color:var(--him);border:1px solid var(--him-b);}
+.ppo{font-size:10.5px;color:var(--text-2);line-height:1.5;font-weight:300;}
+/* totals */
+tr.rt td.tdl{background:var(--navy-3);border-right:1px solid rgba(255,255,255,0.08);border-bottom:none;}
+tr.rt td.tdl .lt{color:rgba(255,255,255,0.3);}
+tr.rt td.tdm{background:var(--navy-3);border-right:1px solid rgba(255,255,255,0.07);border-bottom:none;padding:13px 12px 15px;}
+tr.rt td.tdm:last-child{border-right:none;}
+.tl-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);display:block;margin-bottom:9px;}
+.tl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.tl-row:last-of-type{margin-bottom:0;}
+.tl-who{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.tl-row.her .tl-who{color:rgba(208,136,154,0.85);}
+.tl-row.him .tl-who{color:rgba(122,171,191,0.85);}
+.tl-kcal{font-size:18px;font-weight:700;letter-spacing:-0.5px;}
+.tl-row.her .tl-kcal{color:#d0889a;}
+.tl-row.him .tl-kcal{color:#7aabbf;}
+.tl-unit{font-size:9px;color:rgba(255,255,255,0.18);font-weight:500;border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;margin-top:7px;display:block;letter-spacing:1px;text-transform:uppercase;}
+/* legend */
+.legend{background:var(--surface);border-bottom:1px solid var(--rule);padding:10px 48px;}
+.leg-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;color:var(--text-2);}
+.ldot{width:7px;height:7px;border-radius:50%;}
+.ldot.her{background:var(--her);}
+.ldot.him{background:var(--him);}
+.ldot.wo{background:var(--gold);}
+.ldot.re{background:var(--sage);}
+.lsep{width:1px;height:12px;background:var(--border-strong);}
+
+/* ════════════════════════════════
+   PAGE 3 — MEAL PLANS
+════════════════════════════════ */
+.day-tabs{display:flex;gap:4px;padding:24px 48px 0;border-bottom:1px solid var(--rule);}
+.dtab{background:none;border:none;font-family:'Inter',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);padding:10px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.dtab:hover{color:var(--text-2);}
+.dtab.active{color:var(--text);border-bottom-color:var(--terracotta);}
+.wo-pip{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.day-content{display:none;padding:0 48px 72px;}
+.day-content.active{display:block;}
+.day-hdr{display:flex;align-items:baseline;gap:14px;padding:28px 0 20px;border-bottom:1px solid var(--rule);margin-bottom:4px;}
+.day-name{font-size:32px;font-weight:700;letter-spacing:-1px;}
+.day-tag{font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.day-tag.wo{color:var(--gold);}
+.day-tag.re{color:var(--sage);}
+/* meal rows */
+.meal-row{display:grid;grid-template-columns:100px 1fr;gap:0 36px;padding:28px 0;border-bottom:1px solid var(--rule);}
+.meal-row:last-child{border-bottom:none;}
+.mr-lbl{}
+.mr-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:3px;}
+.mr-type.b{color:var(--gold);}
+.mr-type.l{color:var(--sage);}
+.mr-type.d{color:var(--terracotta);}
+.mr-type.s{color:var(--text-3);}
+.mr-time{font-size:10px;color:var(--text-3);font-weight:300;}
+.mr-main{}
+.mr-title{font-size:18px;font-weight:600;letter-spacing:-0.3px;margin-bottom:7px;line-height:1.25;}
+.mr-desc{font-size:12.5px;color:var(--text-2);line-height:1.7;margin-bottom:0;font-weight:300;max-width:600px;}
+
+/* Portion + why block — replaces old her/him split columns */
+.pn-block{border-top:1px solid var(--rule);margin-top:14px;padding-top:14px;}
+.pn-row{display:flex;gap:10px;margin-bottom:8px;}
+.pn-row:last-of-type{margin-bottom:0;}
+.pn-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;flex-shrink:0;padding-top:1px;width:28px;}
+.pn-tag.her{color:var(--her);}
+.pn-tag.him{color:var(--him);}
+.pn-text{font-size:11.5px;color:var(--text-2);line-height:1.6;font-weight:300;}
+.pn-text strong{color:var(--text);font-weight:600;}
+
+/* Portion measure line */
+.measure{display:flex;gap:8px;align-items:flex-start;padding-top:12px;border-top:1px solid var(--rule);margin-top:12px;font-size:11.5px;color:var(--text-2);font-weight:300;}
+.measure-icon{color:var(--terracotta);flex-shrink:0;margin-top:1px;}
+.measure strong{color:var(--text);font-weight:600;}
+.nutrients{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);}
+.nc{font-size:10px;color:var(--sage);font-weight:600;letter-spacing:0.2px;display:flex;align-items:center;gap:5px;}
+.nc::before{content:'';display:inline-block;width:4px;height:4px;background:var(--sage);border-radius:50%;opacity:.5;}
+
+/* Snack note (single-person entries) */
+.snack-note{padding-top:12px;border-top:1px solid var(--rule);margin-top:12px;}
+.snack-note+.snack-note{border-top:1px solid var(--rule);margin-top:10px;padding-top:10px;}
+.snack-note .pn-tag{display:inline-block;margin-bottom:4px;}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);padding:22px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.05);}
+footer .fl{font-size:12px;font-weight:600;letter-spacing:0.5px;color:rgba(255,255,255,0.22);}
+footer .fr{font-size:10px;color:rgba(255,255,255,0.18);text-align:right;line-height:1.7;}
+footer .fr span{color:rgba(126,138,114,.7);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div>
+      <span class="eyebrow">Family Wellness Plan</span>
+      <h1>The <strong>Weekly Plan</strong></h1>
+    </div>
+    <div class="hdr-stats">
+      <div class="stat"><span class="stat-v her">1,300–1,650</span><span class="stat-l">Her daily kcal</span></div>
+      <div class="stat"><span class="stat-v him">1,700–2,100</span><span class="stat-l">His daily kcal</span></div>
+    </div>
+  </div>
+  <p class="hdr-note">Anti-inflammatory · Hormone balance (Her) · Blood pressure (Him) · Muscle building · Weight loss · Workouts 4×/week</p>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <nav class="nav-inner">
+    <button class="nav-btn active" onclick="showPage('ref',this)">Reference Guide</button>
+    <button class="nav-btn" onclick="showPage('cal',this)">Weekly Calendar</button>
+    <button class="nav-btn" onclick="showPage('meals',this)">Full Meal Plans</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE 1 — REFERENCE GUIDE
+════════════════════════════════════════ -->
+<div class="page active" id="page-ref">
+<div class="wrap">
+
+  <div class="sec"><hr><span class="sec-lbl">No-Scale Portion Guide</span><hr></div>
+  <p class="intro">Your hand is the most reliable measuring tool — it scales to your body automatically. Use these every time you plate or store a meal.</p>
+
+  <div class="portion-grid">
+    <div class="portion-cell"><div class="p-icon">✊</div><div><span class="p-amt">1 cup</span><span class="p-name">Closed Fist</span><div class="p-desc">Volume foods — rice, beans, oatmeal, yogurt, soup, cooked veggies.</div><div class="p-tags"><span class="p-tag">Jasmine rice</span><span class="p-tag">Oatmeal</span><span class="p-tag">Black beans</span><span class="p-tag">Greek yogurt</span><span class="p-tag">Soup</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">🖐</div><div><span class="p-amt">3–4 oz</span><span class="p-name">Flat Palm</span><div class="p-desc">All cooked proteins — thickness and diameter of your palm, not fingers.</div><div class="p-tags"><span class="p-tag">Chicken breast</span><span class="p-tag">Wild salmon</span><span class="p-tag">Flank steak</span><span class="p-tag">Turkey</span><span class="p-tag">Tuna</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">👍</div><div><span class="p-amt">1 tbsp</span><span class="p-name">Thumb Tip to Knuckle</span><div class="p-desc">Calorie-dense fats and sauces. Two thumbs = 2 tbsp.</div><div class="p-tags"><span class="p-tag">Nut butter</span><span class="p-tag">Olive oil</span><span class="p-tag">Olive oil mayo</span><span class="p-tag">Low-sodium tamari</span><span class="p-tag">Maple syrup</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">🤲</div><div><span class="p-amt">2 cups</span><span class="p-name">Both Fists Together</span><div class="p-desc">Raw greens and high-volume foods that cook down significantly.</div><div class="p-tags"><span class="p-tag">Salad greens</span><span class="p-tag">Raw spinach</span><span class="p-tag">Stir-fry veggies</span><span class="p-tag">Shredded cabbage</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">⛳</div><div><span class="p-amt">¼ cup</span><span class="p-name">Golf Ball (dry)</span><div class="p-desc">Uncooked grains — measure before cooking. Volume roughly doubles after.</div><div class="p-tags"><span class="p-tag">Dry jasmine rice</span><span class="p-tag">Dry rolled oats</span><span class="p-tag">Nuts</span><span class="p-tag">Seeds</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">🤏</div><div><span class="p-amt">1 tsp</span><span class="p-name">Fingertip Pinch</span><div class="p-desc">Spices, condiments, his salt maximum per meal. Herbs and citrus do the rest.</div><div class="p-tags"><span class="p-tag">His salt max / meal</span><span class="p-tag">Turmeric</span><span class="p-tag">Cinnamon</span><span class="p-tag">Honey</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">🥑</div><div><span class="p-amt">¼ fruit</span><span class="p-name">Two Fingers Wide</span><div class="p-desc">Avocado — width of index + middle finger across the flesh.</div><div class="p-tags"><span class="p-tag">153 kcal/100g</span><span class="p-tag">9.07g oleic acid/100g</span><span class="p-tag">463mg potassium/100g</span><span class="p-tag">87.8mcg folate/100g</span></div></div></div>
+    <div class="portion-cell"><div class="p-icon">🥚</div><div><span class="p-amt">~6g protein</span><span class="p-name">1 Large Egg</span><div class="p-desc">72 kcal, 6g protein, 186mg choline per egg. Count by number, not volume.</div><div class="p-tags"><span class="p-tag">Her target: 2 eggs</span><span class="p-tag">Him target: 2–3 eggs</span><span class="p-tag">Hard-boiled = same nutrition</span></div></div></div>
+  </div>
+
+  <div class="protein-hdr">Common Protein Sources — Palm-Sized Portions</div>
+  <div class="ptable">
+    <div class="ptcell"><div class="pf">Wild Salmon</div><div class="pp">5 oz (Her) / 6 oz (Him)</div><div class="pv">~35g / ~42g</div></div>
+    <div class="ptcell"><div class="pf">Chicken Breast</div><div class="pp">4 oz (Her) / 5 oz (Him)</div><div class="pv">~33g / ~41g</div></div>
+    <div class="ptcell"><div class="pf">Ground Turkey</div><div class="pp">3 oz (Her) / 4 oz (Him)</div><div class="pv">~20g / ~27g</div></div>
+    <div class="ptcell"><div class="pf">Flank Steak</div><div class="pp">3–4 oz (Her) / 5 oz (Him)</div><div class="pv">~26g / ~33g</div></div>
+    <div class="ptcell"><div class="pf">Greek Yogurt</div><div class="pp">1 cup (fist)</div><div class="pv">~17–20g</div></div>
+    <div class="ptcell"><div class="pf">Eggs (3 large)</div><div class="pp">3 eggs</div><div class="pv">~18g</div></div>
+    <div class="ptcell"><div class="pf">Canned Tuna</div><div class="pp">3 oz rinsed</div><div class="pv">~22g</div></div>
+    <div class="ptcell"><div class="pf">Black Beans</div><div class="pp">½ cup (fist)</div><div class="pv">~8g</div></div>
+  </div>
+
+  <div class="targets">
+    <div class="tcol"><span class="twho">Her Daily Targets</span><div class="ttitle">Woman, 50 · Weight Loss + Muscle</div><div class="trow"><span class="tl">Calories (rest days)</span><span class="tv">1,300–1,450 kcal</span></div><div class="trow"><span class="tl">Calories (workout days)</span><span class="tv">1,500–1,650 kcal</span></div><div class="trow"><span class="tl">Protein target</span><span class="tv">100–120g / day</span></div><div class="trow"><span class="tl">Fiber target</span><span class="tv">25–30g / day</span></div><div class="trow"><span class="tl">Sodium limit</span><span class="tv">&lt;2,000mg / day</span></div></div>
+    <div class="tcol"><span class="twho">His Daily Targets</span><div class="ttitle">Man, 72 · BP + Muscle Maintenance</div><div class="trow"><span class="tl">Calories (rest days)</span><span class="tv">1,700–1,900 kcal</span></div><div class="trow"><span class="tl">Calories (workout days)</span><span class="tv">1,950–2,100 kcal</span></div><div class="trow"><span class="tl">Protein target</span><span class="tv">130–150g / day</span></div><div class="trow"><span class="tl">Potassium target</span><span class="tv">3,500–4,700mg / day</span></div><div class="trow"><span class="tl">Sodium limit</span><span class="tv">&lt;1,500mg / day</span></div></div>
+  </div>
+
+  <div class="sec"><hr><span class="sec-lbl">Beverage Upgrades</span><hr></div>
+  <div class="bev-grid">
+    <div class="bev-col">
+      <span class="bev-kicker">For Both — Replace Immediately</span>
+      <h3>Ditch the Plastic Water Bottles</h3>
+      <p>Even BPA-free plastic leaches BPS, BPF, and phthalates — all clinically identified endocrine disruptors. For a post-hysterectomy woman managing hormone balance and a man with low testosterone, plastic is silently working against both of your primary health goals.</p>
+      <div class="bottles">
+        <div class="bottle"><strong>LifeFactory Glass</strong><span>BPA/BPS/phthalate-free · Silicone sleeve · Dishwasher safe</span></div>
+        <div class="bottle"><strong>YETI Rambler</strong><span>18/8 medical-grade stainless · Zero leaching · Cold all day</span></div>
+        <div class="bottle"><strong>Hydro Flask Standard</strong><span>Food-grade 18/8 steel · Great for both</span></div>
+        <div class="bottle"><strong>Klean Kanteen Classic</strong><span>Certified non-toxic · Wide mouth for easy cleaning</span></div>
+      </div>
+    </div>
+    <div class="bev-col">
+      <span class="bev-kicker">For Her — Bladder-Safe Swaps</span>
+      <h3>Juice Swaps That Actually Help</h3>
+      <p>Many common juices lower urinary pH and worsen bladder urgency. The swaps below prioritize bladder safety and hormone support.</p>
+      <div class="swaps">
+        <div class="swap"><span class="swap-s ok">✓ In</span><span class="swap-n">Diluted tart cherry juice</span><span class="swap-note">Melatonin precursor · anti-inflammatory</span></div>
+        <div class="swap"><span class="swap-s ok">✓ In</span><span class="swap-n">Pure pomegranate juice</span><span class="swap-note">Estrogen support · BP-friendly for him too</span></div>
+        <div class="swap"><span class="swap-s ok">✓ In</span><span class="swap-n">Cucumber-infused water</span><span class="swap-note">Bladder-neutral · anti-bloat</span></div>
+        <div class="swap"><span class="swap-s ok">✓ In</span><span class="swap-n">Aloe vera juice</span><span class="swap-note">Bladder-soothing · gut-calming</span></div>
+        <div class="swap"><span class="swap-s no">✗ Out</span><span class="swap-n">Orange + grapefruit juice</span><span class="swap-note">Lowers urinary pH · bladder irritant</span></div>
+        <div class="swap"><span class="swap-s no">✗ Out</span><span class="swap-n">Cranberry cocktail</span><span class="swap-note">High sugar · acidic · bladder trigger</span></div>
+        <div class="swap"><span class="swap-s no">✗ Out</span><span class="swap-n">Carbonated beverages</span><span class="swap-note">CO₂ irritates bladder lining directly</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><hr><span class="sec-lbl">Key Nutrition Data — USDA &amp; OpenNutrition Verified</span><hr></div>
+  <p class="intro">Pink values are relevant to her hormone and joint health. Blue values are relevant to his blood pressure and testosterone.</p>
+  <div class="data-grid">
+    <div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">USDA SR Legacy · FDC 171998</div><h4>Wild Atlantic Salmon — per 100g cooked</h4></div><div class="dr"><span class="dl">Protein</span><span class="dv">25.4g</span></div><div class="dr"><span class="dl">Potassium</span><span class="dv hm">628mg</span></div><div class="dr"><span class="dl">Sodium</span><span class="dv hs">56mg — very low</span></div><div class="dr"><span class="dl">Total Fat (EPA+DHA rich)</span><span class="dv">8.1g</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv">37mg</span></div><div class="dr"><span class="dl">Energy</span><span class="dv">~182 kcal</span></div></div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">OpenNutrition · USDA Foundational Foods</div><h4>Old-Fashioned Oats — per 100g dry</h4></div><div class="dr"><span class="dl">Protein</span><span class="dv">13.5g</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv hh">126mg</span></div><div class="dr"><span class="dl">Dietary Fiber</span><span class="dv">10.4g</span></div><div class="dr"><span class="dl">Potassium</span><span class="dv hm">350mg</span></div><div class="dr"><span class="dl">Soluble Fiber (beta-glucan)</span><span class="dv">3g</span></div><div class="dr"><span class="dl">Calories</span><span class="dv">382 kcal</span></div><div class="dt-note">½ cup dry = her serving · ¾ cup dry = his serving</div></div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">OpenNutrition · Multiple sources verified</div><h4>Avocado — per 100g fresh</h4></div><div class="dr"><span class="dl">Oleic Acid (Omega-9)</span><span class="dv hh">9.07g</span></div><div class="dr"><span class="dl">Potassium</span><span class="dv hm">463mg</span></div><div class="dr"><span class="dl">Folate DFE</span><span class="dv hh">87.8mcg</span></div><div class="dr"><span class="dl">Dietary Fiber</span><span class="dv">6.6g</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv">28.2mg</span></div><div class="dr"><span class="dl">Calories</span><span class="dv">153 kcal</span></div><div class="dt-note">¼ avocado (~68g) per serving for both</div></div>
+    </div>
+    <div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">OpenNutrition · USDA FDC 2644285</div><h4>Black Beans, Canned &amp; Rinsed — per 100g</h4></div><div class="dr"><span class="dl">Protein</span><span class="dv">6.91g</span></div><div class="dr"><span class="dl">Folate DFE</span><span class="dv hh">128mcg</span></div><div class="dr"><span class="dl">Dietary Fiber</span><span class="dv">6.69g</span></div><div class="dr"><span class="dl">Potassium</span><span class="dv hm">253mg</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv">32.5mg</span></div><div class="dr"><span class="dl">Sodium (drained + rinsed)</span><span class="dv">~130mg</span></div><div class="dt-note">Rinsing canned beans reduces sodium by ~40%</div></div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">OpenNutrition · USDA verified</div><h4>Flaxseed, Ground — per 1 tbsp (10g)</h4></div><div class="dr"><span class="dl">Lignans (phytoestrogens)</span><span class="dv hh">Highest of any food</span></div><div class="dr"><span class="dl">Alpha-Linolenic Acid (ALA)</span><span class="dv hh">2.3g</span></div><div class="dr"><span class="dl">Dietary Fiber</span><span class="dv">2.8g</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv">28mg</span></div><div class="dr"><span class="dl">Calories</span><span class="dv">55 kcal</span></div><div class="dt-note">Always use ground — whole seeds pass undigested</div></div>
+      <div class="dt"><div class="dt-hd"><div class="dt-src">USDA SR Legacy · Multiple sources</div><h4>Sweet Potato (medium, baked w/ skin) — per 130g</h4></div><div class="dr"><span class="dl">Beta-Carotene (as Vitamin A)</span><span class="dv hh">21,907 IU</span></div><div class="dr"><span class="dl">Potassium</span><span class="dv hm">694mg</span></div><div class="dr"><span class="dl">Vitamin C</span><span class="dv">35mg</span></div><div class="dr"><span class="dl">Dietary Fiber</span><span class="dv">3.8g</span></div><div class="dr"><span class="dl">Magnesium</span><span class="dv">27mg</span></div><div class="dr"><span class="dl">Calories</span><span class="dv">~112 kcal</span></div><div class="dt-note">½ medium per serving for both</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE 2 — CALENDAR
+════════════════════════════════════════ -->
+<div class="page" id="page-cal">
+<div class="legend"><div class="leg-row"><div class="leg"><span class="ldot her"></span>Her</div><div class="lsep"></div><div class="leg"><span class="ldot him"></span>Him</div><div class="lsep"></div><div class="leg"><span class="ldot wo"></span>Workout day</div><div class="lsep"></div><div class="leg"><span class="ldot re"></span>Rest day</div></div></div>
+<div class="cal-scroll">
+<table class="cal">
+<colgroup><col class="cl"><col class="cd"><col class="cd"><col class="cd"><col class="cd"><col class="cd"><col class="cd"><col class="cd"></colgroup>
+<thead>
+  <tr>
+    <th class="thl"></th>
+    <th class="thd"><div class="dh wo"><span class="dhn">Monday</span><div class="dhs wo"><span class="dp"></span>Workout</div></div></th>
+    <th class="thd"><div class="dh re"><span class="dhn">Tuesday</span><div class="dhs re"><span class="dp"></span>Rest</div></div></th>
+    <th class="thd"><div class="dh wo"><span class="dhn">Wednesday</span><div class="dhs wo"><span class="dp"></span>Workout</div></div></th>
+    <th class="thd"><div class="dh re"><span class="dhn">Thursday</span><div class="dhs re"><span class="dp"></span>Rest</div></div></th>
+    <th class="thd"><div class="dh wo"><span class="dhn">Friday</span><div class="dhs wo"><span class="dp"></span>Workout</div></div></th>
+    <th class="thd"><div class="dh re"><span class="dhn">Saturday</span><div class="dhs re"><span class="dp"></span>Rest</div></div></th>
+    <th class="thd"><div class="dh wo"><span class="dhn">Sunday</span><div class="dhs wo"><span class="dp"></span>Workout</div></div></th>
+  </tr>
+</thead>
+<tbody>
+<tr class="rb">
+  <td class="tdl"><div class="li"><span class="lt b">Breakfast</span><span class="ltime">7–8 am</span></div></td>
+  <td class="tdm"><span class="mn">Greek Yogurt Parfait with Berries & Flaxseed</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">340 kcal</span></div><div class="ppo">1 cup yogurt · ½ cup berries · 1 tbsp flax · 2 tbsp walnuts · 1 tsp honey</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">490 kcal</span></div><div class="ppo">Same + 8 oz whole milk alongside</div></div></td>
+  <td class="tdm"><span class="mn">Anti-Inflammatory Veggie Scramble</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">370 kcal</span></div><div class="ppo">3 eggs · spinach · ½ bell pepper · ¼ avocado · avocado oil</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">560 kcal</span></div><div class="ppo">Same + 2 slices sourdough + 8 oz whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Power Oatmeal with Flaxseed & Almond Butter</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">400 kcal</span></div><div class="ppo">½ cup dry oats · 1 tbsp flax · 1 tbsp almond butter · ½ cup blueberries</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">590 kcal</span></div><div class="ppo">¾ cup dry oats · same toppings + 8 oz whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Huevos Rancheros — Lightened Up</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">390 kcal</span></div><div class="ppo">2 eggs · 2 corn tortillas · ¼ cup black beans · ¼ avocado · salsa</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">540 kcal</span></div><div class="ppo">Same + 1 extra tortilla + 8 oz whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Sweet Potato & Turkey Sausage Hash</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">420 kcal</span></div><div class="ppo">½ sweet potato · 2 oz sausage · 2 eggs · ½ cup peppers + onion</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">590 kcal</span></div><div class="ppo">¾ sweet potato · 3 oz sausage · 3 eggs + 8 oz whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Sheet Pan Eggs, Sausage & Potato Hash</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">400 kcal</span></div><div class="ppo">½ cup Yukon Gold · 2 eggs · 2 oz sausage · peppers + onion</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">600 kcal</span></div><div class="ppo">¾ cup potatoes · 3 eggs · 3 oz sausage + milk + ¼ avocado</div></div></td>
+  <td class="tdm"><span class="mn">Oat Flour Protein Pancakes with Berries</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">380 kcal</span></div><div class="ppo">2 pancakes · ½ cup berries · 1 tsp maple syrup · 1 tbsp flax</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">560 kcal</span></div><div class="ppo">3 pancakes · same toppings + 8 oz whole milk</div></div></td>
+</tr>
+<tr class="rl">
+  <td class="tdl"><div class="li"><span class="lt l">Lunch</span><span class="ltime">12–1 pm</span></div></td>
+  <td class="tdm"><span class="mn">Grilled Chicken Burrito Bowl</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">490 kcal</span></div><div class="ppo">½ cup jasmine rice · 4 oz chicken · ½ cup beans · ¼ avocado · pico</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">570 kcal</span></div><div class="ppo">½ cup jasmine rice · 5 oz chicken · ½ cup beans · ¼ avocado · pico</div></div></td>
+  <td class="tdm"><span class="mn">Turkey & Ginger Vegetable Soup</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">360 kcal</span></div><div class="ppo">2 cups soup · ¼ cup dry jasmine rice stirred in</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">440 kcal</span></div><div class="ppo">2½ cups soup · ¼ cup dry jasmine rice · extra turkey</div></div></td>
+  <td class="tdm"><span class="mn">Grilled Chicken & Avocado Power Salad</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">460 kcal</span></div><div class="ppo">2 cups greens · 4 oz chicken · ¼ avocado · pumpkin seeds · lemon oil</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">550 kcal</span></div><div class="ppo">2 cups greens · 5 oz chicken · ¼ avocado · 2 tbsp pumpkin seeds</div></div></td>
+  <td class="tdm"><span class="mn">Salmon Patty with Roasted Yukon Gold Potatoes</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">420 kcal</span></div><div class="ppo">1 patty (~3 oz) · ½ cup potato cubes · cucumber-tomato salad</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">530 kcal</span></div><div class="ppo">1.5 patties · ¾ cup potato cubes · salad</div></div></td>
+  <td class="tdm"><span class="mn">Chicken, Bean & Avocado Burrito</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">480 kcal</span></div><div class="ppo">2 corn tortillas · 4 oz chicken · ¼ cup beans · ¼ avocado · romaine</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">560 kcal</span></div><div class="ppo">2 corn tortillas · 5 oz chicken · ¼ cup beans · ¼ avocado</div></div></td>
+  <td class="tdm"><span class="mn">Tuna-Stuffed Avocado with Cucumber</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">340 kcal</span></div><div class="ppo">½ avocado · 3 oz rinsed tuna · celery + onion · 1 tbsp olive oil mayo</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">420 kcal</span></div><div class="ppo">½ avocado · 4 oz rinsed tuna · same mix · 1 tbsp olive oil mayo</div></div></td>
+  <td class="tdm"><span class="mn">Chicken Tortilla Soup</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">420 kcal</span></div><div class="ppo">2 cups soup · 4 baked tortilla strips · ¼ avocado · lime</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">510 kcal</span></div><div class="ppo">2½ cups soup · 4 tortilla strips · ¼ avocado · lime</div></div></td>
+</tr>
+<tr class="rd">
+  <td class="tdl"><div class="li"><span class="lt d">Dinner</span><span class="ltime">6–7 pm</span></div></td>
+  <td class="tdm"><span class="mn">Wild Salmon, Sweet Potato & Broccoli</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">490 kcal</span></div><div class="ppo">5 oz wild salmon · 1 small sweet potato · 1 cup broccoli · lemon + herbs</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">600 kcal</span></div><div class="ppo">6 oz wild salmon · 1 medium sweet potato · 1½ cups broccoli</div></div></td>
+  <td class="tdm"><span class="mn">Ground Turkey Tacos with Purple Cabbage Slaw</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">390 kcal</span></div><div class="ppo">2 corn tortillas · 3 oz turkey · unlimited slaw + fresh salsa</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">490 kcal</span></div><div class="ppo">2 corn tortillas · 4 oz turkey · slaw + salsa + ¼ avocado</div></div></td>
+  <td class="tdm"><span class="mn">Steak Fajitas with Bell Peppers & Jasmine Rice</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">490 kcal</span></div><div class="ppo">3–4 oz flank steak · ½ cup jasmine rice · unlimited peppers + onions</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">610 kcal</span></div><div class="ppo">5 oz flank steak · ½ cup rice · ½ cup black beans · peppers + onions</div></div></td>
+  <td class="tdm"><span class="mn">Ginger-Garlic Chicken Stir-Fry over Jasmine Rice</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">470 kcal</span></div><div class="ppo">4 oz chicken · 1½ cups broccoli + snap peas + bok choy · ½ cup rice</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">570 kcal</span></div><div class="ppo">5 oz chicken · 1½ cups vegetables · ½ cup rice · sesame oil sauce</div></div></td>
+  <td class="tdm"><span class="mn">Lemon-Herb Wild Salmon, Asparagus & Jasmine Rice</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">510 kcal</span></div><div class="ppo">5 oz wild salmon · 6–8 asparagus spears · ½ cup jasmine rice</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">630 kcal</span></div><div class="ppo">7 oz wild salmon · 6–8 asparagus spears · ½ cup jasmine rice</div></div></td>
+  <td class="tdm"><span class="mn">Turkey Stuffed Bell Peppers with Jasmine Rice</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">420 kcal</span></div><div class="ppo">1 large pepper half · 3 oz turkey filling · ¼ cup jasmine rice inside</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">540 kcal</span></div><div class="ppo">1.5 pepper halves · 4 oz turkey filling · ¼ cup jasmine rice each</div></div></td>
+  <td class="tdm"><span class="mn">Herb-Roasted Chicken Thighs, Sweet Potato & Green Beans</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">460 kcal</span></div><div class="ppo">1 thigh (skin removed) · ½ sweet potato · 1 cup green beans</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">600 kcal</span></div><div class="ppo">1–2 thighs (skin on) · ½ sweet potato · 1 cup green beans</div></div></td>
+</tr>
+<tr class="rs">
+  <td class="tdl"><div class="li"><span class="lt s">Snacks</span><span class="ltime">As needed</span></div></td>
+  <td class="tdm"><span class="mn">Workout Recovery</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">100 kcal</span></div><div class="ppo">½ cup edamame · 2 tbsp tart cherry in 6 oz water before bed</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">220 kcal</span></div><div class="ppo">1 oz pumpkin seeds + 1 apple</div></div></td>
+  <td class="tdm"><span class="mn">Rest Day Snacks</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">130 kcal</span></div><div class="ppo">Celery + 2 tbsp almond butter · evening: chamomile tea</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">120 kcal</span></div><div class="ppo">½ cup mixed berries + 2 Brazil nuts</div></div></td>
+  <td class="tdm"><span class="mn">Pre & Post Workout Fuel</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">320 kcal</span></div><div class="ppo">Pre: banana + 1 tbsp almond butter · Post: 1 cup Greek yogurt</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">350 kcal</span></div><div class="ppo">Pre: banana + trail mix · Post: 8 oz whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Recovery & Sleep Snacks</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">220 kcal</span></div><div class="ppo">1 oz walnuts + 1 square dark chocolate · passionflower tea</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">340 kcal</span></div><div class="ppo">1 apple + 1 oz walnuts · evening: 8 oz warm whole milk</div></div></td>
+  <td class="tdm"><span class="mn">Workout Day Fuel</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">180 kcal</span></div><div class="ppo">Pre: ½ cup shelled edamame · Post: ½ cup cottage cheese + cucumber</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">260 kcal</span></div><div class="ppo">Pre: 8 oz beet juice · Post: 8 oz whole milk + hard-boiled egg</div></div></td>
+  <td class="tdm"><span class="mn">Weekend Wind-Down</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">190 kcal</span></div><div class="ppo">Blueberry-banana smoothie (1 cup) + 2 tbsp tart cherry pre-bed</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">150 kcal</span></div><div class="ppo">8 oz warm whole milk before bed</div></div></td>
+  <td class="tdm"><span class="mn">Post-Workout + Sunday Prep</span><div class="pr her"><div class="pw"><span class="pwl">Her</span><span class="pk">220 kcal</span></div><div class="ppo">Hard-boiled egg + ½ avocado · prep: cook rice, roast sweet potatoes</div></div><div class="pr him"><div class="pw"><span class="pwl">Him</span><span class="pk">190 kcal</span></div><div class="ppo">Chocolate milk: whole milk + 1 tbsp cocoa + vanilla</div></div></td>
+</tr>
+<tr class="rt">
+  <td class="tdl"><div class="li"><span class="lt t">Daily</span><span class="lt t" style="margin-top:2px">Total</span></div></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,520</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~1,880</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,250</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~1,610</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,670</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~2,100</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,500</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~1,980</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,590</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~2,040</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,350</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~1,710</span></div><span class="tl-unit">kcal / day</span></td>
+  <td class="tdm"><div class="tl-lbl">Estimated Daily</div><div class="tl-row her"><span class="tl-who">Her</span><span class="tl-kcal">~1,480</span></div><div class="tl-row him"><span class="tl-who">Him</span><span class="tl-kcal">~1,860</span></div><span class="tl-unit">kcal / day</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE 3 — FULL MEAL PLANS
+════════════════════════════════════════ -->
+<div class="page" id="page-meals">
+<div class="day-tabs">
+  <button class="dtab active" onclick="showDay('mon',this)">Monday <span class="wo-pip"></span></button>
+  <button class="dtab" onclick="showDay('tue',this)">Tuesday</button>
+  <button class="dtab" onclick="showDay('wed',this)">Wednesday <span class="wo-pip"></span></button>
+  <button class="dtab" onclick="showDay('thu',this)">Thursday</button>
+  <button class="dtab" onclick="showDay('fri',this)">Friday <span class="wo-pip"></span></button>
+  <button class="dtab" onclick="showDay('sat',this)">Saturday</button>
+  <button class="dtab" onclick="showDay('sun',this)">Sunday <span class="wo-pip"></span></button>
+</div>
+
+<!-- MON -->
+<div class="day-content active" id="dc-mon">
+  <div class="day-hdr"><span class="day-name">Monday</span><span class="day-tag wo">Workout Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">7–8 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Greek Yogurt Parfait with Berries & Ground Flaxseed</div>
+      <div class="mr-desc">Full-fat Greek yogurt layered with blueberries and raspberries, a tablespoon of ground flaxseed, crushed walnuts, and a light drizzle of honey. No cooking required.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>1 cup yogurt · ½ cup berries · 1 tbsp flax · 2 tbsp walnuts · 1 tsp honey.</strong> Flaxseed lignans are the most potent dietary phytoestrogen. Blueberry anthocyanins reduce hot-flash inflammation. Avoid citrus juice alongside — bladder irritant.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Same + 8 oz whole milk on the side.</strong> Walnuts provide ALA Omega-3s. Milk adds calcium and vitamin D which support testosterone synthesis.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">~28g protein</span><span class="nc">Omega-3 lignans</span><span class="nc">Magnesium</span><span class="nc">Probiotics</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Grilled Chicken Burrito Bowl</div>
+      <div class="mr-desc">Jasmine rice, seasoned grilled chicken breast, rinsed black beans, pico de gallo, shredded cabbage, fresh avocado, and lime juice. Cilantro-lime drizzle instead of sour cream.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ cup rice · 4 oz chicken · ½ cup beans · ¼ avocado · unlimited pico.</strong> Skip jalapeño — bladder trigger. Avocado's 9.07g oleic acid per 100g is directly anti-inflammatory. Black beans provide 128mcg folate per 100g.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>½ cup rice · 5 oz chicken · ½ cup beans · ¼ avocado · unlimited pico.</strong> Use no-salt-added beans, rinsed. Season with herbs and lime only. Black beans deliver 253mg potassium per 100g — excellent for blood pressure.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">~38g protein</span><span class="nc">Potassium 600mg+</span><span class="nc">Fiber 10g+</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Wild Salmon with Roasted Sweet Potato & Steamed Broccoli</div>
+      <div class="mr-desc">Pan-seared wild Atlantic salmon, oven-roasted sweet potato wedges with rosemary and olive oil, steamed broccoli with fresh lemon. Herbs only — no added salt.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>5 oz salmon · 1 small sweet potato · 1 cup broccoli.</strong> EPA+DHA reduces joint inflammation within 3 weeks. Sweet potato beta-carotene protects joint tissue lining. Eat 3 hours before bed for better sleep.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>6 oz salmon · 1 medium sweet potato · 1½ cups broccoli.</strong> USDA: 628mg potassium and only 56mg sodium per 100g salmon — one of the best sodium-to-potassium ratios of any protein.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">~38g protein</span><span class="nc">EPA+DHA Omega-3</span><span class="nc">Potassium 900mg+</span><span class="nc">Beta-carotene</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Pre + Post</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Workout Recovery Fuel</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ cup edamame + 2 tbsp tart cherry concentrate in 6 oz water before bed.</strong> Tart cherry is a natural melatonin precursor — RCTs show improved sleep onset in women 50+.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>1 oz pumpkin seeds + 1 apple.</strong> Pumpkin seeds: 7.6mg zinc per oz — the most important mineral for testosterone. Apple quercetin reduces blood pressure. Or a warm glass of whole milk.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TUE -->
+<div class="day-content" id="dc-tue">
+  <div class="day-hdr"><span class="day-name">Tuesday</span><span class="day-tag re">Rest Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">7–8 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Anti-Inflammatory Veggie Scramble</div>
+      <div class="mr-desc">Three whole eggs scrambled with baby spinach, diced bell pepper, and onion in avocado oil. A pinch of turmeric and black pepper — black pepper activates curcumin's bioavailability by up to 2,000%. Sliced avocado on top.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>3 eggs · spinach · ½ bell pepper · ¼ avocado.</strong> Turmeric-pepper is the most potent anti-arthritis food pairing available. Eggs provide choline which supports brain fog during hormonal transitions.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Same + 2 slices whole grain sourdough + 8 oz whole milk.</strong> Sourdough provides potassium and slow-release carbohydrates. Milk's vitamin D supports testosterone via receptor signaling.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Curcumin activated</span><span class="nc">Choline</span><span class="nc">~22g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Turkey & Ginger Vegetable Soup with Jasmine Rice</div>
+      <div class="mr-desc">Ground turkey simmered with carrots, zucchini, celery, garlic, and fresh ginger in low-sodium chicken broth. A scoop of jasmine rice stirred in to serve. Finished with fresh lemon juice.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 cups soup · ¼ cup dry jasmine rice stirred in.</strong> Ginger is among the most well-studied anti-bloat foods and directly reduces joint pain in arthritis. Zucchini is completely bladder-neutral.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>2½ cups soup · ¼ cup dry jasmine rice · extra turkey.</strong> Use broth under 150mg sodium per cup. Add 4–5 cloves garlic — allicin is clinically linked to measurable blood pressure reduction.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Anti-bloat</span><span class="nc">Low sodium</span><span class="nc">~28g protein</span><span class="nc">Allicin (BP)</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Ground Turkey Tacos with Purple Cabbage Slaw</div>
+      <div class="mr-desc">Lean ground turkey seasoned with cumin, chili powder, and garlic (no seasoning packets). Corn tortillas, purple cabbage slaw dressed with lime and olive oil, fresh tomato salsa, cilantro.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 corn tortillas · 3 oz turkey · unlimited slaw + fresh salsa.</strong> Purple cabbage anthocyanins are among the most potent anti-inflammatory plant compounds. Skip jalapeño and hot sauce — bladder irritants.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>2 corn tortillas · 4 oz turkey · slaw + salsa + ¼ avocado.</strong> Turkey provides zinc for testosterone at significantly lower sodium than beef. Use only fresh salsa — store-bought averages 200–350mg sodium per 2 tbsp.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Anthocyanins</span><span class="nc">Low-sodium seasoning</span><span class="nc">~30g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Anytime</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Rest Day Snacks</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>Celery + 2 tbsp almond butter · evening: chamomile or spearmint tea.</strong> Spearmint specifically reduces androgen imbalance and calms bladder urgency. Almond butter magnesium supports progesterone production.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>½ cup mixed berries + 2 Brazil nuts (2 max — selenium toxicity above that).</strong> Anthocyanins in berries widen blood vessels and reduce BP. Brazil nut selenium + zinc combination supports testosterone.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WED -->
+<div class="day-content" id="dc-wed">
+  <div class="day-hdr"><span class="day-name">Wednesday</span><span class="day-tag wo">Workout Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">7–8 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Power Oatmeal with Flaxseed, Blueberries & Almond Butter</div>
+      <div class="mr-desc">Old-fashioned rolled oats cooked in water, topped with ground flaxseed, fresh blueberries, cinnamon, and a spoonful of almond butter. Verified at 13.5g protein and 126mg magnesium per 100g dry (OpenNutrition).</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ cup dry oats · 1 tbsp flax · 1 tbsp almond butter · ½ cup blueberries.</strong> Oat beta-glucan supports estrogen clearance. Cinnamon stabilizes blood sugar, reducing hormonal mood swings. Flaxseed lignans are the strongest plant-based phytoestrogen in food.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>¾ cup dry oats · same toppings + 8 oz whole milk.</strong> Oat beta-glucan is FDA-approved for cholesterol reduction. Magnesium (126mg/100g) vasodilates blood vessels — meaningful for blood pressure management.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Beta-glucan</span><span class="nc">Lignans (Her)</span><span class="nc">Magnesium 126mg/100g</span><span class="nc">~18g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Grilled Chicken & Avocado Power Salad</div>
+      <div class="mr-desc">Arugula, spinach, and romaine with grilled chicken, cucumber, cherry tomatoes, red onion, ¼ avocado, and pumpkin seeds. Dressed with olive oil and fresh lemon — no bottled dressings.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 cups greens · 4 oz chicken · ¼ avocado · pumpkin seeds · lemon + olive oil.</strong> Arugula is among the best foods for estrogen balance. Olive oil's oleocanthal inhibits COX-1 and COX-2 enzymes — same mechanism as ibuprofen, naturally from food.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>2 cups greens · 5 oz chicken · ¼ avocado · 2 tbsp pumpkin seeds.</strong> Pumpkin seeds are the zinc-per-gram leader among plant foods. Red onion quercetin is clinically linked to blood pressure reduction. No store-bought dressing.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Oleocanthal (anti-inflam)</span><span class="nc">Zinc (testosterone)</span><span class="nc">Lycopene</span><span class="nc">~35g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Steak Fajitas with Bell Peppers & Jasmine Rice</div>
+      <div class="mr-desc">Lean flank or skirt steak sliced thin, seared with tri-color bell peppers and onion in avocado oil. Seasoned with cumin, garlic, and lime only. Served with corn tortillas or over jasmine rice. Side of black beans.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>3–4 oz flank steak · ½ cup jasmine rice · unlimited peppers + onions.</strong> Red bell peppers contain more vitamin C than citrus — critical for collagen repair and joint cartilage maintenance.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>5 oz flank steak · ½ cup rice · ½ cup black beans · peppers + onions.</strong> Season with herbs and lime only — zero added salt. Bell peppers and onions deliver substantial potassium for blood pressure support.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Heme iron</span><span class="nc">Zinc (testosterone)</span><span class="nc">Vitamin C (joints)</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Pre + Post</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Pre & Post Workout Fuel</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>Pre: banana + 1 tbsp almond butter · Post: 1 cup Greek yogurt.</strong> Avoid caffeine pre-workout if experiencing hot flashes — it raises core body temperature.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Pre: banana + trail mix with pumpkin seeds · Post: 8 oz whole milk.</strong> Milk's leucine directly triggers muscle protein synthesis — the most effective natural post-workout drink at his age.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">20–30g protein within 45 min post-workout</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- THU -->
+<div class="day-content" id="dc-thu">
+  <div class="day-hdr"><span class="day-name">Thursday</span><span class="day-tag re">Rest Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">7–8 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Huevos Rancheros — Lightened Up</div>
+      <div class="mr-desc">Two corn tortillas, two poached or fried eggs, rinsed no-salt-added black beans, fresh tomato-chili salsa, sliced avocado, and fresh cilantro. No cheese needed.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 eggs · 2 corn tortillas · ¼ cup black beans · ¼ avocado · fresh salsa.</strong> Skip hot sauce. Avocado fat improves beta-carotene absorption from the fresh tomato salsa. Black beans are phytoestrogen-rich and completely bladder-friendly.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Same + 1 extra tortilla + 8 oz whole milk.</strong> Black beans: 253mg potassium + 32.5mg magnesium per 100g — dual blood pressure support in one ingredient.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Folate 128mcg/100g (beans)</span><span class="nc">Phytoestrogens</span><span class="nc">~24g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Salmon Patty with Roasted Yukon Gold Potatoes & Cucumber-Tomato Salad</div>
+      <div class="mr-desc">Canned wild salmon formed into a patty with egg and herbs, pan-seared in avocado oil. Oven-roasted Yukon Gold cubes with rosemary and olive oil. Cucumber-tomato salad dressed with lemon.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>1 patty (~3 oz) · ½ cup potato cubes · unlimited cucumber-tomato salad.</strong> Yukon Gold potatoes with skin on provide resistant starch — feeding healthy gut bacteria, progressively reducing bloating over time.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>1.5 patties (~4.5 oz) · ¾ cup potato cubes · unlimited salad.</strong> Season potatoes with rosemary and garlic only. One medium potato with skin delivers ~925mg potassium. Combined with salmon's 628mg/100g, this is one of the highest-potassium meals in the plan.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Potassium 1,500mg+</span><span class="nc">Resistant starch (gut)</span><span class="nc">~32g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Ginger-Garlic Chicken Stir-Fry over Jasmine Rice</div>
+      <div class="mr-desc">Chicken breast strips with broccoli, snap peas, shredded carrots, and bok choy. Sauce: fresh ginger, garlic, low-sodium tamari, sesame oil, rice vinegar. Served over jasmine rice.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>4 oz chicken · 1½ cups broccoli + snap peas + bok choy · ½ cup jasmine rice.</strong> Broccoli sulforaphane reduces inflammatory cytokines. Ginger is one of the most researched foods for arthritis pain — 1g daily shows consistent clinical results.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>5 oz chicken · 1½ cups vegetables · ½ cup jasmine rice · sesame oil sauce.</strong> Use low-sodium tamari — regular soy averages 1,000mg+ sodium per tablespoon. Sesamin in sesame oil clinically lowers systolic blood pressure.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Sulforaphane</span><span class="nc">Sesamin (BP)</span><span class="nc">~36g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Afternoon + Eve</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Recovery & Sleep Snacks</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>1 oz walnuts + 1 square 85%+ dark chocolate · evening: passionflower tea.</strong> Magnesium and flavonoids both associated with reduced hot flash frequency. Passionflower is more evidence-supported for sleep than melatonin supplements.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>1 apple + 1 oz walnuts · evening: 8 oz warm whole milk.</strong> Walnuts are the only tree nut with significant alpha-linolenic acid (plant Omega-3 for cardiovascular protection). Milk tryptophan supports sleep in older adults.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Magnesium (Her sleep)</span><span class="nc">ALA Omega-3</span><span class="nc">Tryptophan (Him sleep)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FRI -->
+<div class="day-content" id="dc-fri">
+  <div class="day-hdr"><span class="day-name">Friday</span><span class="day-tag wo">Workout Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">7–8 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Sweet Potato & Turkey Sausage Breakfast Hash</div>
+      <div class="mr-desc">Diced sweet potato pan-fried with crumbled turkey sausage (homemade: sage, fennel, garlic — no sodium), bell pepper, and onion. Two eggs cracked directly in to finish.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ sweet potato · 2 oz sausage · 2 eggs · ½ cup peppers + onion.</strong> Fennel is anti-bloat and phytoestrogen-containing. Sweet potato Vitamin A (11,000 IU per medium) supports hormone production and joint lining.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>¾ sweet potato · 3 oz sausage · 3 eggs + 8 oz whole milk.</strong> Make sausage at home — store-bought averages 400–700mg sodium per link. A medium sweet potato alone delivers ~694mg potassium.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Vitamin A 11,000 IU</span><span class="nc">~30g protein</span><span class="nc">Potassium 1,200mg+</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Chicken, Bean & Avocado Burrito — Corn Tortilla</div>
+      <div class="mr-desc">Two corn tortillas with seasoned shredded chicken, mashed no-salt-added black beans, diced tomato, shredded romaine, and sliced avocado. Lime juice instead of sauce.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 corn tortillas · 4 oz chicken · ¼ cup beans · ¼ avocado · romaine + tomato.</strong> Mashed black beans (not refried) provide 128mcg folate per 100g and are completely bladder-friendly. Good pre-workout lunch that won't cause bloat during exercise.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>2 corn tortillas · 5 oz chicken · ¼ cup beans · ¼ avocado.</strong> Restaurant burritos average 1,200–2,000mg sodium. At home with homemade seasoning and lime, this drops under 200mg.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Folate 128mcg/100g</span><span class="nc">Magnesium 32.5mg/100g</span><span class="nc">~36g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Baked Lemon-Herb Wild Salmon with Roasted Asparagus & Jasmine Rice</div>
+      <div class="mr-desc">Salmon baked with lemon slices, fresh dill, parsley, and garlic at 400°F for 12–14 minutes. Asparagus roasted alongside with olive oil and lemon zest. Served with fluffy jasmine rice.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>5 oz salmon · 6–8 asparagus spears · ½ cup jasmine rice.</strong> Asparagus is a natural diuretic that gently reduces bloating without irritating the bladder. Consistent Omega-3 intake measurably reduces joint stiffness within 3 weeks.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>7 oz salmon · 6–8 asparagus spears · ½ cup jasmine rice.</strong> USDA: 56mg sodium and 628mg potassium per 100g salmon — one of the most favorable sodium-to-potassium ratios of any protein.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">EPA+DHA (USDA verified)</span><span class="nc">628mg K+ per 100g</span><span class="nc">~38g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Pre + Post</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Workout Day Fuel</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>Pre: ½ cup shelled edamame (60–90 min before) · Post: ½ cup cottage cheese + cucumber.</strong> Edamame is the most bioavailable source of dietary phytoestrogen in food.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Pre: 8 oz beet juice · Post: 8 oz whole milk + hard-boiled egg.</strong> Dietary nitrates in beet juice convert to nitric oxide, vasodilating blood vessels and acutely lowering blood pressure during exercise.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Nitric oxide (BP + endurance)</span><span class="nc">Isoflavones (Her)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SAT -->
+<div class="day-content" id="dc-sat">
+  <div class="day-hdr"><span class="day-name">Saturday</span><span class="day-tag re">Rest Day — Weekend</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">8–9 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Sheet Pan Eggs, Turkey Sausage & Potato Hash</div>
+      <div class="mr-desc">Cubed Yukon Gold potatoes, sliced homemade turkey sausage, bell peppers, and onion roasted on one sheet pan at 425°F. Eggs cracked directly onto the pan for the last 10 minutes. Seasoned with garlic, rosemary, and sweet paprika.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ cup Yukon Gold · 2 eggs · 2 oz sausage · unlimited peppers + onion.</strong> This is a high-magnesium breakfast — potatoes, eggs, and turkey together support sleep mineral stores. Sweet paprika is clinically anti-inflammatory.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>¾ cup potatoes · 3 eggs · 3 oz sausage + 8 oz whole milk + ¼ avocado on top.</strong> No salt in the seasoning — paprika, garlic powder, and rosemary carry all the flavor. Make this a family weekend ritual.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Magnesium</span><span class="nc">~30g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Tuna-Stuffed Avocado with Cucumber Slices</div>
+      <div class="mr-desc">Water-packed albacore tuna mixed with diced cucumber, celery, red onion, fresh lemon juice, and a touch of olive oil mayo or plain Greek yogurt. Spooned into halved avocados.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>½ avocado · 3 oz rinsed tuna · celery + onion · 1 tbsp olive oil mayo.</strong> Tuna provides selenium for thyroid hormone function — important post-hysterectomy. Cucumber is the most bladder-friendly vegetable. Avocado: 87.8mcg folate per 100g (OpenNutrition).</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>½ avocado · 4 oz rinsed tuna · same mix · 1 tbsp olive oil mayo.</strong> Rinse water-packed tuna after opening — reduces sodium by up to 40%. Tuna delivers 25g+ protein per 3 oz plus Omega-3s for heart health.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Selenium (thyroid)</span><span class="nc">Folate 87.8mcg/100g</span><span class="nc">~30g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Ground Turkey Stuffed Bell Peppers with Jasmine Rice</div>
+      <div class="mr-desc">Halved bell peppers filled with seasoned ground turkey, diced no-salt-added tomato, ¼ cup jasmine rice, and fresh salsa. Baked at 375°F for 30 minutes until peppers are tender. Topped with fresh cilantro.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>1 large pepper half · 3 oz turkey filling · ¼ cup jasmine rice inside.</strong> Red bell peppers provide up to 190mg vitamin C per pepper — higher than any citrus fruit and essential for collagen synthesis and joint cartilage protection.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>1½ pepper halves · 4 oz turkey filling · ¼ cup jasmine rice each.</strong> Use no-salt-added canned tomatoes in the stuffing. Bell peppers are among the highest potassium vegetables available.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Vitamin C 190mg/pepper</span><span class="nc">Low sodium</span><span class="nc">~32g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Afternoon + Eve</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Weekend Wind-Down</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>Afternoon: blueberry-banana smoothie (1 cup) + ½ tsp ground flaxseed + cinnamon · Evening: 2 tbsp tart cherry concentrate in 6 oz water 1 hour before bed.</strong> Cold smoothies help manage hot flashes. Tart cherry melatonin precursor improves sleep onset.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Evening: 8 oz warm whole milk before bed.</strong> Tryptophan plus calcium is clinically studied for improving sleep in older adults. Also provides overnight muscle protein synthesis — critical for maintaining mass at 72.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUN -->
+<div class="day-content" id="dc-sun">
+  <div class="day-hdr"><span class="day-name">Sunday</span><span class="day-tag wo">Workout Day + Prep Day</span></div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type b">Breakfast</span><span class="mr-time">8–9 am</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Oat Flour Protein Pancakes with Fresh Berries</div>
+      <div class="mr-desc">Blend: ½ cup old-fashioned oats, 1 ripe banana, 2 eggs, ½ tsp baking powder, ½ tsp cinnamon. Cook in avocado oil. Top with fresh berries and a drizzle of pure maple syrup. Add 1 tbsp ground flaxseed to hers.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 pancakes · ½ cup berries · 1 tsp maple syrup · 1 tbsp flax in batter.</strong> Banana provides magnesium and B6 — both critical cofactors for progesterone production. Oats plus flaxseed together are the most potent natural hormone-modulating breakfast combination in food.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>3 pancakes · ½ cup berries · 1 tsp maple syrup + 8 oz whole milk.</strong> Eggs plus oats form a complete amino acid profile for muscle maintenance. Pure maple syrup (not table syrup) contains manganese and trace zinc supporting testosterone.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Beta-glucan</span><span class="nc">B6 (progesterone, Her)</span><span class="nc">~20g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type l">Lunch</span><span class="mr-time">12–1 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Chicken Tortilla Soup</div>
+      <div class="mr-desc">Shredded chicken breast in low-sodium broth with no-salt-added tomatoes, black beans, corn, cumin, chili powder, garlic, and lime. Topped with sliced avocado and baked corn tortilla strips. One pot, 30 minutes.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>2 cups soup · 4 baked tortilla strips · ¼ avocado · lime.</strong> Tomato lycopene reduces systemic inflammation. Black beans contribute phytoestrogens. Skip jalapeño and hot sauce. Corn provides B vitamins for adrenal support.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>2½ cups soup · 4 tortilla strips · ¼ avocado · lime.</strong> Use homemade broth or verified low-sodium stock. Tomatoes, beans, and broth together provide substantial potassium — this is among the most BP-supportive meals in the entire plan.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Lycopene</span><span class="nc">Low sodium</span><span class="nc">~34g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type d">Dinner</span><span class="mr-time">6–7 pm</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Herb-Roasted Chicken Thighs with Sweet Potato & Green Beans</div>
+      <div class="mr-desc">Bone-in chicken thighs rubbed with garlic, rosemary, thyme, lemon zest, and avocado oil. Roasted at 425°F alongside sweet potato wedges and whole green beans.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>1 thigh (skin removed) · ½ medium sweet potato · 1 cup green beans.</strong> Rosemary's rosmarinic acid is one of the most potent natural anti-inflammatory compounds. Removing skin reduces calorie density for weight management. Sweet potato beta-carotene reduces hot flash frequency with consistent intake.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>1–2 thighs (skin on) · ½ medium sweet potato · 1 cup green beans.</strong> Chicken thighs provide significantly more zinc than breast meat. Keeping skin on adds fat-soluble vitamins that support testosterone through cholesterol pathways.</span></div>
+      </div>
+      <div class="nutrients"><span class="nc">Rosmarinic acid</span><span class="nc">Beta-carotene</span><span class="nc">~38g protein</span></div>
+    </div>
+  </div>
+
+  <div class="meal-row">
+    <div class="mr-lbl"><span class="mr-type s">Snacks</span><span class="mr-time">Post-workout</span></div>
+    <div class="mr-main">
+      <div class="mr-title">Sunday Meal Prep</div>
+      <div class="mr-desc">With 30–45 minutes of prep, every meal this week takes under 15 minutes to plate. Cook 2 cups dry jasmine rice (stores 5 days) · hard-boil 6 eggs · roast 3 sweet potatoes · make 1 batch soup base or broth.</div>
+      <div class="pn-block">
+        <div class="pn-row"><span class="pn-tag her">Her</span><span class="pn-text"><strong>Hard-boiled egg + ½ avocado.</strong> Consider magnesium glycinate 200–300mg before bed — the most bioavailable form for improving sleep quality and joint comfort.</span></div>
+        <div class="pn-row"><span class="pn-tag him">Him</span><span class="pn-text"><strong>Homemade chocolate milk: whole milk + 1 tbsp unsweetened cocoa + drop of vanilla.</strong> Natural 2:1 carbohydrate-to-protein ratio — the classic and clinically effective post-workout recovery drink.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-meals -->
+
+<footer>
+  <div class="fl">Family Wellness Plan</div>
+  <div class="fr">Nutritional data from <span>USDA SR Legacy</span> and <span>OpenNutrition</span> · Consult your healthcare provider for personalized medical guidance</div>
+</footer>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+function showDay(id, btn) {
+  document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
+  document.getElementById('dc-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
