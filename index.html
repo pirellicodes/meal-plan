@@ -268,6 +268,33 @@ footer .fr{font-size:10px;color:rgba(255,255,255,0.18);text-align:right;line-hei
 footer .fr span{color:rgba(126,138,114,.7);}
 
 /* ════════════════════════════════
+   PAGE 4 — GROCERY LIST
+════════════════════════════════ */
+.grocery-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;}
+.g-cat{margin-bottom:28px;}
+.g-cat-hd{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--text);margin-bottom:0;}
+.g-cat-icon{font-size:18px;}
+.g-cat-name{font-size:13px;font-weight:700;letter-spacing:0.3px;}
+.g-cat-count{font-size:10px;color:var(--text-3);font-weight:500;}
+.g-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--rule);font-size:12px;}
+.g-item:last-child{border-bottom:none;}
+.g-check{width:16px;height:16px;border-radius:3px;border:1.5px solid var(--border-strong);flex-shrink:0;margin-top:1px;cursor:pointer;appearance:none;-webkit-appearance:none;background:var(--surface);transition:background .15s,border-color .15s;}
+.g-check:checked{background:var(--sage);border-color:var(--sage);}
+.g-check:checked~.g-item-info .g-name{text-decoration:line-through;color:var(--text-3);}
+.g-item-info{flex:1;min-width:0;}
+.g-name{font-weight:500;color:var(--text);display:block;line-height:1.3;}
+.g-detail{font-size:10.5px;color:var(--text-3);font-weight:300;margin-top:2px;line-height:1.4;}
+.g-qty{font-size:11px;font-weight:600;color:var(--terracotta);white-space:nowrap;flex-shrink:0;}
+.g-note{background:var(--sage-bg);border:1px solid #d8e8db;border-radius:6px;padding:14px 18px;margin-bottom:28px;font-size:11.5px;color:var(--text-2);line-height:1.7;}
+.g-note strong{color:var(--text);font-weight:600;}
+.g-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:10px;margin-left:4px;vertical-align:middle;}
+.g-tag.her{background:var(--her-bg);color:var(--her);border:1px solid var(--her-b);}
+.g-tag.him{background:var(--him-bg);color:var(--him);border:1px solid var(--him-b);}
+.print-btn{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;border:none;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;padding:10px 20px;border-radius:6px;cursor:pointer;transition:opacity .15s;}
+.print-btn:hover{opacity:0.85;}
+@media print{.nav,.hdr,.day-tabs,footer,.print-btn{display:none !important;}.page{display:block !important;}.wrap{padding:0 !important;}}
+
+/* ════════════════════════════════
    MOBILE RESPONSIVE
 ════════════════════════════════ */
 @media(max-width:768px){
@@ -287,6 +314,9 @@ footer .fr span{color:rgba(126,138,114,.7);}
 
   /* Wrap */
   .wrap{padding:0 20px 60px;}
+
+  /* Grocery */
+  .grocery-grid{grid-template-columns:1fr;}
 
   /* Reference page grids */
   .portion-grid{grid-template-columns:1fr;}
@@ -372,6 +402,7 @@ footer .fr span{color:rgba(126,138,114,.7);}
     <button class="nav-btn active" onclick="showPage('ref',this)">Reference Guide</button>
     <button class="nav-btn" onclick="showPage('cal',this)">Weekly Calendar</button>
     <button class="nav-btn" onclick="showPage('meals',this)">Full Meal Plans</button>
+    <button class="nav-btn" onclick="showPage('grocery',this)">Grocery List</button>
   </nav>
 </div>
 
@@ -940,6 +971,151 @@ footer .fr span{color:rgba(126,138,114,.7);}
 
 </div><!-- /page-meals -->
 
+<!-- ════════════════════════════════════════
+     PAGE 4 — GROCERY LIST
+════════════════════════════════════════ -->
+<div class="page" id="page-grocery">
+<div class="wrap">
+
+  <div class="sec"><hr><span class="sec-lbl">Weekly Grocery List</span><hr></div>
+  <p class="intro">Everything you need for the full 7-day plan. Checkboxes save automatically in your browser. Quantities are for two people (Her + Him) for one week.</p>
+
+  <div class="g-note"><strong>Shopping tip:</strong> Shop the perimeter of the store first (produce, proteins, dairy). Buy canned/pantry items last. Choose no-salt-added versions whenever available. Rinse all canned beans and tuna before use to reduce sodium by ~40%.</div>
+
+  <div style="margin-bottom:24px;"><button class="print-btn" onclick="window.print()">&#9113; Print List</button> <button class="print-btn" style="background:var(--text-3);" onclick="document.querySelectorAll('.g-check').forEach(c=>c.checked=false);saveChecks();">Clear All</button></div>
+
+  <div class="grocery-grid">
+    <div>
+
+      <!-- PROTEINS -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🥩</span><span class="g-cat-name">Proteins</span><span class="g-cat-count">11 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Wild Atlantic salmon fillets</span><span class="g-detail">Mon dinner, Fri dinner — fresh or frozen wild-caught</span></div><span class="g-qty">~1.5 lb</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Chicken breast (boneless, skinless)</span><span class="g-detail">Mon lunch, Wed lunch, Thu dinner, Fri lunch, Sun lunch</span></div><span class="g-qty">~3 lb</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Chicken thighs (bone-in)</span><span class="g-detail">Sun dinner — skin on for Him, remove for Her</span></div><span class="g-qty">4–6 thighs</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Lean ground turkey (93/7)</span><span class="g-detail">Tue dinner, Sat dinner, Fri+Sat breakfast sausage</span></div><span class="g-qty">~2.5 lb</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Flank steak</span><span class="g-detail">Wed dinner fajitas</span></div><span class="g-qty">~1 lb</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Eggs (large)</span><span class="g-detail">Used almost daily — scrambles, hashes, hard-boiled, pancakes</span></div><span class="g-qty">2 dozen</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Canned wild salmon</span><span class="g-detail">Thu lunch patties</span></div><span class="g-qty">2 cans (6 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Canned albacore tuna (water-packed)</span><span class="g-detail">Sat lunch — rinse after opening</span></div><span class="g-qty">2 cans (5 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Shelled edamame (frozen)</span><span class="g-detail">Mon snack, Fri pre-workout <span class="g-tag her">Her</span></span></div><span class="g-qty">1 bag (12 oz)</span></label>
+      </div>
+
+      <!-- DAIRY -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🥛</span><span class="g-cat-name">Dairy</span><span class="g-cat-count">4 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Full-fat Greek yogurt (plain)</span><span class="g-detail">Mon breakfast, Wed post-workout</span></div><span class="g-qty">32 oz tub</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Whole milk</span><span class="g-detail">Daily for Him — breakfast, snacks, post-workout <span class="g-tag him">Him</span></span></div><span class="g-qty">1 gallon</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Cottage cheese</span><span class="g-detail">Fri post-workout <span class="g-tag her">Her</span></span></div><span class="g-qty">8 oz</span></label>
+      </div>
+
+      <!-- GRAINS & STARCHES -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🌾</span><span class="g-cat-name">Grains & Starches</span><span class="g-cat-count">5 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Jasmine rice (dry)</span><span class="g-detail">Used 5+ days — batch cook Sunday</span></div><span class="g-qty">2 lb bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Old-fashioned rolled oats</span><span class="g-detail">Wed breakfast, Sun pancakes</span></div><span class="g-qty">18 oz canister</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Corn tortillas</span><span class="g-detail">Tue, Thu, Fri, Sun — tacos, burritos, huevos rancheros</span></div><span class="g-qty">2 packs (24 ct)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Whole grain sourdough bread</span><span class="g-detail">Tue breakfast <span class="g-tag him">Him</span></span></div><span class="g-qty">1 loaf</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Yukon Gold potatoes</span><span class="g-detail">Thu lunch, Sat breakfast</span></div><span class="g-qty">2 lb</span></label>
+      </div>
+
+      <!-- CANNED & PANTRY -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🥫</span><span class="g-cat-name">Canned & Pantry</span><span class="g-cat-count">8 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Black beans, no-salt-added (canned)</span><span class="g-detail">Mon, Thu, Wed, Fri, Sun — rinse before use</span></div><span class="g-qty">4 cans (15 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">No-salt-added diced tomatoes (canned)</span><span class="g-detail">Sat stuffed peppers, Sun soup</span></div><span class="g-qty">2 cans (14.5 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Low-sodium chicken broth</span><span class="g-detail">Tue soup, Sun tortilla soup — under 150mg Na/cup</span></div><span class="g-qty">2 cartons (32 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Low-sodium tamari</span><span class="g-detail">Thu stir-fry sauce</span></div><span class="g-qty">1 bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Rice vinegar</span><span class="g-detail">Thu stir-fry sauce</span></div><span class="g-qty">1 bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Olive oil mayo</span><span class="g-detail">Sat tuna salad</span></div><span class="g-qty">1 small jar</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Pure maple syrup</span><span class="g-detail">Sun pancakes — real maple only, not table syrup</span></div><span class="g-qty">1 small bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Raw honey</span><span class="g-detail">Mon yogurt parfait</span></div><span class="g-qty">1 small jar</span></label>
+      </div>
+
+    </div>
+    <div>
+
+      <!-- PRODUCE - VEGETABLES -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🥬</span><span class="g-cat-name">Vegetables</span><span class="g-cat-count">18 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Sweet potatoes</span><span class="g-detail">Mon, Fri, Sun — batch roast Sunday</span></div><span class="g-qty">4–5 medium</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Broccoli</span><span class="g-detail">Mon dinner, Thu stir-fry</span></div><span class="g-qty">2 large crowns</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Bell peppers (tri-color)</span><span class="g-detail">Tue, Wed, Fri, Sat — multiple meals</span></div><span class="g-qty">6–8 peppers</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Yellow onions</span><span class="g-detail">Used throughout the week</span></div><span class="g-qty">3–4</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Red onion</span><span class="g-detail">Wed salad, Sat tuna</span></div><span class="g-qty">1</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Baby spinach</span><span class="g-detail">Tue scramble, Wed salad</span></div><span class="g-qty">5 oz bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Arugula</span><span class="g-detail">Wed power salad</span></div><span class="g-qty">5 oz bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Romaine lettuce</span><span class="g-detail">Wed salad, Fri burritos</span></div><span class="g-qty">1 head</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Purple cabbage</span><span class="g-detail">Tue taco slaw</span></div><span class="g-qty">½ head</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Asparagus</span><span class="g-detail">Fri dinner</span></div><span class="g-qty">1 bunch</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Green beans</span><span class="g-detail">Sun dinner</span></div><span class="g-qty">1 lb</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Snap peas + bok choy</span><span class="g-detail">Thu stir-fry</span></div><span class="g-qty">8 oz each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Zucchini + carrots</span><span class="g-detail">Tue soup</span></div><span class="g-qty">2 each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Celery</span><span class="g-detail">Tue soup, Tue snack, Sat tuna</span></div><span class="g-qty">1 bunch</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Cucumbers</span><span class="g-detail">Thu salad, Fri snack, Sat lunch</span></div><span class="g-qty">3</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Cherry tomatoes + Roma tomatoes</span><span class="g-detail">Pico, salads, salsa throughout week</span></div><span class="g-qty">2 pints + 6 Roma</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Fresh garlic</span><span class="g-detail">Used daily</span></div><span class="g-qty">2 heads</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Fresh ginger root</span><span class="g-detail">Tue soup, Thu stir-fry</span></div><span class="g-qty">1 piece (~3 in)</span></label>
+      </div>
+
+      <!-- PRODUCE - FRUITS -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🍎</span><span class="g-cat-name">Fruits</span><span class="g-cat-count">7 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Avocados</span><span class="g-detail">Used daily — buy mix of ripe + firm</span></div><span class="g-qty">7–8</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Blueberries</span><span class="g-detail">Mon parfait, Wed oatmeal, Sat smoothie</span></div><span class="g-qty">2 pints</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Raspberries + mixed berries</span><span class="g-detail">Mon parfait, Tue snack, Sun pancakes</span></div><span class="g-qty">1 pint each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Bananas</span><span class="g-detail">Wed pre-workout, Sat smoothie, Sun pancakes</span></div><span class="g-qty">5–6</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Apples</span><span class="g-detail">Mon + Thu snacks <span class="g-tag him">Him</span></span></div><span class="g-qty">3</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Lemons</span><span class="g-detail">Dressings, salmon, finishing throughout week</span></div><span class="g-qty">5–6</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Limes</span><span class="g-detail">Burrito bowls, tacos, soups, fajitas</span></div><span class="g-qty">5–6</span></label>
+      </div>
+
+      <!-- NUTS, SEEDS & BUTTERS -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🥜</span><span class="g-cat-name">Nuts, Seeds & Butters</span><span class="g-cat-count">6 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Ground flaxseed</span><span class="g-detail">Mon, Wed, Sat, Sun — must be ground, not whole</span></div><span class="g-qty">1 bag (12 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Walnuts</span><span class="g-detail">Mon parfait, Thu snack</span></div><span class="g-qty">6 oz bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Pumpkin seeds (raw)</span><span class="g-detail">Mon snack, Wed salad + snack — zinc for testosterone <span class="g-tag him">Him</span></span></div><span class="g-qty">6 oz bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Almond butter (natural)</span><span class="g-detail">Tue snack, Wed oatmeal + pre-workout</span></div><span class="g-qty">1 jar (12 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Brazil nuts</span><span class="g-detail">Tue snack — max 2/day <span class="g-tag him">Him</span></span></div><span class="g-qty">small bag</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Trail mix with pumpkin seeds</span><span class="g-detail">Wed pre-workout <span class="g-tag him">Him</span></span></div><span class="g-qty">small bag</span></label>
+      </div>
+
+      <!-- OILS & SPICES -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🫒</span><span class="g-cat-name">Oils, Spices & Herbs</span><span class="g-cat-count">14 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Extra virgin olive oil</span></div><span class="g-qty">1 bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Avocado oil</span><span class="g-detail">High-heat cooking</span></div><span class="g-qty">1 bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Toasted sesame oil</span><span class="g-detail">Thu stir-fry</span></div><span class="g-qty">1 small bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Turmeric + black pepper</span><span class="g-detail">Tue scramble — pepper activates curcumin 2,000%</span></div><span class="g-qty">1 each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Ground cumin + chili powder</span><span class="g-detail">Tacos, fajitas, soups</span></div><span class="g-qty">1 each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Ground cinnamon</span><span class="g-detail">Oatmeal, pancakes</span></div><span class="g-qty">1 jar</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Sweet paprika + garlic powder</span><span class="g-detail">Sat hash, sausage seasoning</span></div><span class="g-qty">1 each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Baking powder</span><span class="g-detail">Sun pancakes</span></div><span class="g-qty">1 can</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Fresh rosemary + thyme</span><span class="g-detail">Roasted potatoes, chicken, salmon</span></div><span class="g-qty">1 pack each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Fresh dill + parsley</span><span class="g-detail">Fri salmon</span></div><span class="g-qty">1 bunch each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Fresh cilantro</span><span class="g-detail">Tacos, burrito bowls, soups, stuffed peppers</span></div><span class="g-qty">2 bunches</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Dried sage + fennel seeds</span><span class="g-detail">Homemade turkey sausage seasoning</span></div><span class="g-qty">1 each</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Vanilla extract</span><span class="g-detail">Sun chocolate milk <span class="g-tag him">Him</span></span></div><span class="g-qty">1 small bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Unsweetened cocoa powder</span><span class="g-detail">Sun post-workout chocolate milk <span class="g-tag him">Him</span></span></div><span class="g-qty">1 small tin</span></label>
+      </div>
+
+      <!-- BEVERAGES & TEAS -->
+      <div class="g-cat">
+        <div class="g-cat-hd"><span class="g-cat-icon">🍵</span><span class="g-cat-name">Beverages & Teas</span><span class="g-cat-count">5 items</span></div>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Tart cherry concentrate</span><span class="g-detail">Mon + Sat pre-bed — melatonin precursor <span class="g-tag her">Her</span></span></div><span class="g-qty">1 bottle</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Chamomile or spearmint tea</span><span class="g-detail">Tue evening <span class="g-tag her">Her</span></span></div><span class="g-qty">1 box</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Passionflower tea</span><span class="g-detail">Thu evening — sleep support <span class="g-tag her">Her</span></span></div><span class="g-qty">1 box</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Beet juice (100% pure)</span><span class="g-detail">Fri pre-workout — nitric oxide for BP <span class="g-tag him">Him</span></span></div><span class="g-qty">2 bottles (8 oz)</span></label>
+        <label class="g-item"><input type="checkbox" class="g-check"><div class="g-item-info"><span class="g-name">Dark chocolate 85%+</span><span class="g-detail">Thu snack — magnesium + flavonoids <span class="g-tag her">Her</span></span></div><span class="g-qty">1 bar</span></label>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-grocery -->
+
 <footer>
   <div class="fl">Family Wellness Plan</div>
   <div class="fr">Nutritional data from <span>USDA SR Legacy</span> and <span>OpenNutrition</span> · Consult your healthcare provider for personalized medical guidance</div>
@@ -959,6 +1135,22 @@ function showDay(id, btn) {
   document.getElementById('dc-' + id).classList.add('active');
   btn.classList.add('active');
 }
+// Grocery checkbox persistence
+function saveChecks(){
+  const states=[];
+  document.querySelectorAll('.g-check').forEach(c=>states.push(c.checked));
+  localStorage.setItem('grocery-checks',JSON.stringify(states));
+}
+function loadChecks(){
+  try{
+    const s=JSON.parse(localStorage.getItem('grocery-checks'));
+    if(s){document.querySelectorAll('.g-check').forEach((c,i)=>{if(s[i]!==undefined)c.checked=s[i];});}
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  loadChecks();
+  document.querySelectorAll('.g-check').forEach(c=>c.addEventListener('change',saveChecks));
+});
 </script>
 </body>
 </html>
